@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://raw.githubusercontent.com/zhuxiujia/GoMybatis/master/mybatis-3-mapper.dtd">
+
+<mapper>
+    <resultMap id="BaseResultMap"  tables="{{.TableName}}">
+        {{range $index, $item := .ColumnList}}{{if eq $index 0}}<id column="{{$item.DbColumnField}}" langType="{{$item.LangType}}"/>{{else}}
+        <result column="{{$item.DbColumnField}}" langType="{{$item.LangType}}"/>{{end}}{{end}}
+    </resultMap>
+    <sql id="Base_Column_List">
+        {{range $index, $item := .ColumnList}}{{if eq $index 0}}{{$item.DbColumnField}}{{else}},{{$item.DbColumnField}}{{end}}{{end}}
+    </sql>
+
+    <select id="selectByPrimaryKey">
+        select
+        <include refid="Base_Column_List"/>
+        from {{.TableName}}
+        where id = #{id}
+    </select>
+
+    <delete id="deleteByPrimaryKey" >
+        delete
+        from {{.TableName}}
+        where id = #{id}
+    </delete>
+
+    <insert id="insertSelective" >
+        insert into {{.TableName}}
+        <trim prefix="(" suffix=")" suffixOverrides=",">{{range $index, $item := .ColumnList}}{{ if or (hasPrefix $item.LangType "int") (hasPrefix $item.LangType "float") }}
+            <if test="{{$item.DbColumnField}} != nil and {{$item.DbColumnField}}!=0 ">
+                {{$item.DbColumnField}},
+            </if>{{else if hasPrefix $item.LangType "string" }}
+            <if test="{{$item.DbColumnField}} != nil and {{$item.DbColumnField}}!='' ">
+                {{$item.DbColumnField}},
+            </if>{{else}}
+            <if test="{{$item.DbColumnField}} != nil ">
+                {{$item.DbColumnField}},
+            </if>{{end}}{{end}}
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">{{range $index, $item := .ColumnList}}{{ if or (hasPrefix $item.LangType "int") (hasPrefix $item.LangType "float") }}
+            <if test="{{$item.DbColumnField}} != nil and {{$item.DbColumnField}}!=0 ">
+                {{ printf "%s%s%s" "#{" $item.DbColumnField "}," }}
+            </if>{{else if hasPrefix $item.LangType "string" }}
+            <if test="{{$item.DbColumnField}} != nil and {{$item.DbColumnField}}!='' ">
+                {{ printf "%s%s%s" "#{" $item.DbColumnField "}," }}
+            </if>{{else}}
+            <if test="{{$item.DbColumnField}} != nil ">
+                {{ printf "%s%s%s" "#{" $item.DbColumnField "}," }}
+            </if>{{end}}{{end}}
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective">
+        update {{.TableName}}
+        <set>{{range $index, $item := .ColumnList}}{{ if or (hasPrefix $item.LangType "int") (hasPrefix $item.LangType "float") }}
+            <if test="{{$item.DbColumnField}} != nil and {{$item.DbColumnField}}!=0 ">
+                {{$item.DbColumnField}} = {{ printf "%s%s%s" "#{" $item.DbColumnField "}," }}
+            </if>{{else if hasPrefix $item.LangType "string" }}
+            <if test="{{$item.DbColumnField}} != nil and {{$item.DbColumnField}}!='' ">
+                {{$item.DbColumnField}} = {{ printf "%s%s%s" "#{" $item.DbColumnField "}," }}
+            </if>{{else}}
+            <if test="{{$item.DbColumnField}} != nil ">
+                {{$item.DbColumnField}} = {{ printf "%s%s%s" "#{" $item.DbColumnField "}," }}
+            </if>{{end}}{{end}}
+            updated_at = CURRENT_TIMESTAMP,
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>
