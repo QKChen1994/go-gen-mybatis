@@ -14,9 +14,9 @@ func Get{{.TableNameCamelUpper}}Mapper() *{{.TableNameCamelUpper}}Mapper {
 type {{.TableNameCamelUpper}}Mapper struct {
     GoMybatis.SessionSupport //session事务操作 写法1.  SpaceManageMapper.SessionSupport.NewSession()
 
-    SelectByPrimaryKey func(id int32) (entity.{{.TableNameCamelUpper}}Entity, error) `args:"id"`
+    SelectByPrimaryKey func(id int) (entity.{{.TableNameCamelUpper}}Entity, error) `args:"id"`
 
-    InsertSelective func(session *GoMybatis.Session, arg entity.{{.TableNameCamelUpper}}Entity) (int64, error)
+    InsertSelective func(session *GoMybatis.Session, arg entity.{{.TableNameCamelUpper}}Entity) (int, error)
 
-    UpdateByPrimaryKeySelective func(session *GoMybatis.Session, arg entity.{{.TableNameCamelUpper}}Entity) (int64, error)
+    UpdateByPrimaryKeySelective func(session *GoMybatis.Session, arg entity.{{.TableNameCamelUpper}}Entity) (int, error)
 }
