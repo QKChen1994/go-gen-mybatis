@@ -15,10 +15,10 @@ var mysqlToGoType = map[string]string{
 	"char":      "string",
 	"varchar":   "string",
 	"text":      "string",
-	"date":      "time.Time",
-	"datetime":  "time.Time",
-	"timestamp": "time.Time",
-	"time":      "time.Duration", // 或者使用 string
+	"date":      "util.CustomTime",
+	"datetime":  "util.CustomTime",
+	"timestamp": "util.CustomTime",
+	"time":      "util.CustomTime", // 或者使用 string
 	"blob":      "[]byte",
 }
 
@@ -47,10 +47,10 @@ var mysqlToGoTypeXml = map[string]string{
 	"char":      "string",
 	"varchar":   "string",
 	"text":      "string",
-	"date":      "Time",
-	"datetime":  "Time",
-	"timestamp": "Time",
-	"time":      "Time", // 或者使用 string
+	"date":      "time.Time",
+	"datetime":  "time.Time",
+	"timestamp": "time.Time",
+	"time":      "time.Time", // 或者使用 string
 	"blob":      "[]byte",
 }
 

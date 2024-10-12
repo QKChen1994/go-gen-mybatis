@@ -10,8 +10,9 @@ import (
 )
 
 var (
-	dsn             = "root:root@tcp(localhost:3306)/fission_activity"
-	ProjectRootPath = "changle-fission-activity/activity/model"
+	dsn                 = "root:root@tcp(localhost:3306)/fission_activity"
+	ProjectRootPath     = "go-fission-activity/activity/model"
+	ProjectUtilRootPath = "go-fission-activity/util"
 )
 
 func main() {
@@ -98,7 +99,7 @@ func generateModel(tableName string, columns []Column) (string, model.XmlModel) 
 	var columnList []*model.ColumnInfo
 
 	var entityBuilder strings.Builder
-	entityBuilder.WriteString(fmt.Sprintf("package entity\n\nimport \"time\" \n\ntype %s struct {\n", capitalize(tableNameCamel+"Entity")))
+	entityBuilder.WriteString(fmt.Sprintf("package entity\n\nimport \""+ProjectUtilRootPath+"\"\n\ntype %s struct {\n", capitalize(tableNameCamel+"Entity")))
 
 	//var xmlResultMapBuilder strings.Builder
 	//xmlResultMapBuilder.WriteString(fmt.Sprintf("    <resultMap id=\"BaseResultMap\"  tables=\"%s\">\n", tableName))
