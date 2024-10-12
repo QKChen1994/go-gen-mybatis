@@ -11,7 +11,7 @@
         {{range $index, $item := .ColumnList}}{{if eq $index 0}}{{$item.DbColumnField}}{{else}},{{$item.DbColumnField}}{{end}}{{end}}
     </sql>
 
-    <select id="selectByPrimaryKey">
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from {{.TableName}}
