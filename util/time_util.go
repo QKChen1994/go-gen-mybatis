@@ -8,6 +8,7 @@ import (
 
 type CustomTime struct {
 	time.Time
+	IsNotZero bool
 }
 
 func (d *CustomTime) UnmarshalJSON(b []byte) error {
@@ -16,7 +17,7 @@ func (d *CustomTime) UnmarshalJSON(b []byte) error {
 	dateStr = strings.ReplaceAll(dateStr, "\"", "")
 
 	if dateStr == "null" || dateStr == "" || dateStr == "\"\"" {
-		d = nil
+		d.IsNotZero = false
 		return nil
 	}
 
@@ -34,10 +35,18 @@ func (d *CustomTime) UnmarshalJSON(b []byte) error {
 		}
 		d.Time = t
 	}
-
+	d.IsNotZero = !d.Time.IsZero()
 	return nil
 }
 
 func (d CustomTime) MarshalJSON() ([]byte, error) {
-	return d.Time.MarshalJSON()
+	json, err := d.Time.MarshalJSON()
+	return json, err
+}
+
+func NewCustomTime(t time.Time) CustomTime {
+	return CustomTime{
+		Time:      t,
+		IsNotZero: !t.IsZero(),
+	}
 }

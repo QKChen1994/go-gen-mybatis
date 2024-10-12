@@ -33,7 +33,7 @@
             <if test="{{$item.DbColumnField}} != nil and {{$item.DbColumnField}}!='' ">
                 {{$item.DbColumnField}},
             </if>{{else if hasPrefix $item.LangType "time.Time" }}
-            <if test="{{$item.DbColumnField}} != nil and {{$item.DbColumnField}}.Time.Nanosecond()!=0 ">
+            <if test="{{$item.DbColumnField}} != nil and {{$item.DbColumnField}}.IsNotZero ">
                  {{ printf "%s%s%s" "#{" $item.DbColumnField "}," }}
             </if>{{else}}
             <if test="{{$item.DbColumnField}} != nil ">
@@ -47,7 +47,7 @@
             <if test="{{$item.DbColumnField}} != nil and {{$item.DbColumnField}}!='' ">
                 {{ printf "%s%s%s" "#{" $item.DbColumnField "}," }}
             </if>{{else if hasPrefix $item.LangType "time.Time" }}
-             <if test="{{$item.DbColumnField}} != nil and {{$item.DbColumnField}}.Time.Nanosecond()!=0 ">
+             <if test="{{$item.DbColumnField}} != nil and {{$item.DbColumnField}}.IsNotZero ">
                  {{ printf "%s%s%s" "#{" $item.DbColumnField ".Time}," }}
              </if>{{else}}
             <if test="{{$item.DbColumnField}} != nil ">
@@ -65,7 +65,7 @@
             <if test="{{$item.DbColumnField}} != nil and {{$item.DbColumnField}}!='' ">
                 {{$item.DbColumnField}} = {{ printf "%s%s%s" "#{" $item.DbColumnField "}," }}
             </if>{{else if hasPrefix $item.LangType "time.Time" }}
-            <if test="{{$item.DbColumnField}} != nil and {{$item.DbColumnField}}.Time.Nanosecond()!=0 ">
+            <if test="{{$item.DbColumnField}} != nil and {{$item.DbColumnField}}.IsNotZero ">
               {{$item.DbColumnField}} = {{ printf "%s%s%s" "#{" $item.DbColumnField ".Time}," }}
             </if>{{else}}
             <if test="{{$item.DbColumnField}} != nil ">
