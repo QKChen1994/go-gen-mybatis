@@ -58,7 +58,7 @@
 
     <update id="updateByPrimaryKeySelective">
         update {{.TableName}}
-        <set>{{range $index, $item := .ColumnList}}{{ if or (hasPrefix $item.LangType "int") (hasPrefix $item.LangType "float") }}
+        <set>{{range $index, $item := .ColumnList}}{{if ne $item.DbColumnField "id"}}{{if or (hasPrefix $item.LangType "int") (hasPrefix $item.LangType "float") }}
             <if test="{{$item.DbColumnField}} != nil and {{$item.DbColumnField}}!=0 ">
                 {{$item.DbColumnField}} = {{ printf "%s%s%s" "#{" $item.DbColumnField "}," }}
             </if>{{else if hasPrefix $item.LangType "string" }}
@@ -70,7 +70,7 @@
             </if>{{else}}
             <if test="{{$item.DbColumnField}} != nil ">
                 {{$item.DbColumnField}} = {{ printf "%s%s%s" "#{" $item.DbColumnField "}," }}
-            </if>{{end}}{{end}}
+            </if>{{end}}{{end}}{{end}}
             updated_at = CURRENT_TIMESTAMP,
         </set>
         where id = #{id}
