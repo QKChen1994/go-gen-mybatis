@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"gen_mybatis/template/model"
-	"gen_mybatis/utils"
+	"gen_mybatis/util"
 	_ "github.com/go-sql-driver/mysql"
 	"strings"
 )
@@ -52,21 +52,21 @@ func main() {
 
 		// 组装struct数据
 		modelStr, xmlModel := generateModel(tableName, columns)
-		utils.WriteFile("genFiles/entity/"+tableName+"_entity.go", modelStr)
+		util.WriteFile("genFiles/entity/"+tableName+"_entity.go", modelStr)
 
 		// xml
-		tableNameCamel := utils.ToCamelCase(tableName)
+		tableNameCamel := util.ToCamelCase(tableName)
 		//utils.WriteFile("mapper/"+tableNameCamel+"Mapper.xml", xmlStr)
 
-		utils.WriteTemplateToFile("genFiles/mapper/"+tableNameCamel+"Mapper.xml", "template/xml_template.txt", xmlModel)
+		util.WriteTemplateToFile("genFiles/mapper/"+tableNameCamel+"Mapper.xml", "template/xml_template.txt", xmlModel)
 
 		// dao
 		daoTemplateData := map[string]interface{}{
 			"ProjectRootPath":     ProjectRootPath,
-			"TableNameCamelLower": utils.ToLowerFirstChar(tableNameCamel),
+			"TableNameCamelLower": util.ToLowerFirstChar(tableNameCamel),
 			"TableNameCamelUpper": tableNameCamel,
 		}
-		utils.WriteTemplateToFile("genFiles/dao/"+tableName+"_mapper.go", "template/dao_template.txt", daoTemplateData)
+		util.WriteTemplateToFile("genFiles/dao/"+tableName+"_mapper.go", "template/dao_template.txt", daoTemplateData)
 
 		fmt.Println(tableName + "生成成功！")
 	}
@@ -94,7 +94,7 @@ func selectAllTable(db *sql.DB) []string {
 }
 
 func generateModel(tableName string, columns []Column) (string, model.XmlModel) {
-	tableNameCamel := utils.ToCamelCase(tableName)
+	tableNameCamel := util.ToCamelCase(tableName)
 
 	var columnList []*model.ColumnInfo
 
@@ -107,9 +107,9 @@ func generateModel(tableName string, columns []Column) (string, model.XmlModel) 
 	//var xmlSqlBuilder strings.Builder
 	//xmlSqlBuilder.WriteString(fmt.Sprintf("    <sql id=\"Base_Column_List\">\n"))
 	for _, column := range columns {
-		fieldCamel := utils.ToCamelCase(column.Field)
-		goType := utils.ConvertMySQLTypeToGoType(column.ColType)
-		goXmlType := utils.ConvertMySQLTypeToGoTypeXml(column.ColType)
+		fieldCamel := util.ToCamelCase(column.Field)
+		goType := util.ConvertMySQLTypeToGoType(column.ColType)
+		goXmlType := util.ConvertMySQLTypeToGoTypeXml(column.ColType)
 
 		entityBuilder.WriteString(fmt.Sprintf("    %s %s `json:\"%s\" gm:\"%s\"`\n", capitalize(fieldCamel), goType, column.Field, column.Field))
 
