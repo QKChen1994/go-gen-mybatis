@@ -45,8 +45,31 @@ func (d CustomTime) MarshalJSON() ([]byte, error) {
 }
 
 func NewCustomTime(t time.Time) CustomTime {
+	// 获取当前地区的时间
+	localTime := t.In(time.Local) // 使用本地时区
+	format := localTime.Format("2006-01-02 15:04:05")
+	nowZone, err := time.Parse("2006-01-02 15:04:05", format)
+	if err != nil {
+		fmt.Errorf("cant parse date: %#v", err)
+	}
 	return CustomTime{
-		Time:      t,
-		IsNotZero: !t.IsZero(),
+		Time:      nowZone,
+		IsNotZero: !nowZone.IsZero(),
+	}
+}
+
+func GetNowCustomTime() CustomTime {
+	// 获取当前时间（默认是 UTC 时间）
+	now := time.Now()
+	// 获取当前地区的时间
+	localTime := now.In(time.Local) // 使用本地时区
+	format := localTime.Format("2006-01-02 15:04:05")
+	nowZone, err := time.Parse("2006-01-02 15:04:05", format)
+	if err != nil {
+		fmt.Errorf("cant parse date: %#v", err)
+	}
+	return CustomTime{
+		Time:      nowZone,
+		IsNotZero: !localTime.IsZero(),
 	}
 }
