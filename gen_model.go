@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	dsn                 = "root:root@tcp(localhost:3306)/fission_activity"
+	dsn                 = "root:Exa998StgPass1!@tcp(182.92.219.71:3306)/wa-fission"
 	ProjectRootPath     = "go-fission-activity/activity/model"
 	ProjectUtilRootPath = "go-fission-activity/util"
 )

@@ -34,7 +34,7 @@
                 {{$item.DbColumnField}},
             </if>{{else if hasPrefix $item.LangType "time.Time" }}
             <if test="{{$item.DbColumnField}} != nil and {{$item.DbColumnField}}.IsNotZero ">
-                 {{ printf "%s%s%s" "#{" $item.DbColumnField "}," }}
+                  {{$item.DbColumnField}},
             </if>{{else}}
             <if test="{{$item.DbColumnField}} != nil ">
                 {{$item.DbColumnField}},
